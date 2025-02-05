@@ -7,7 +7,9 @@ See [JWT](http://jwt.io) for more information on JSON Web Tokens (JWT).
 #### Create a token with HMAC-SHA256
 
 ```c
-String payload = `{}`;
+import jwt;
+..
+String payload = `{"sub":"1234567890","name":"John Doe","iat":1516239022}`;
 String token = jwt::encode_new(payload, "1234", JwtSigningMethod.HS256)!;
 defer token.free();
 ```
@@ -15,7 +17,10 @@ defer token.free();
 #### Validate token and get payload
 
 ```c
-String payload = jwt::decode_new(token_text, "1234", JwtSigningMethod.HS256)!;
+import jwt;
+..
+String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SP0R2USEDHqPV7mcIK08ZAs4WtPMQ0NdMHuSD8tnWOw";
+String payload = jwt::decode_new(token, "1234", JwtSigningMethod.HS256)!;
 defer payload.free();
 ```
 
