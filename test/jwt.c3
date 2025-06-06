@@ -10,27 +10,27 @@ const PAYLOAD = `{"sub":"1234567890","name":"John Doe","iat":1516239022}`;
 fn void test_decode()
 {
 	String payload = jwt::new_decode(JWT_TEXT, SECRET)!!;
-	defer payload.free();
+	defer payload.free(mem);
 	assert(payload == `{"sub":"1234567890","name":"John Doe","iat":1516239022}`);
 }
 
 fn void test_decode_wrong_secret()
 {
-	String! payload = jwt::new_decode(JWT_TEXT, "bogus secret");
-	assert(@catch(payload) == JwtError.INVALID_SIGNATURE);
+	String? payload = jwt::new_decode(JWT_TEXT, "bogus secret");
+	assert(@catch(payload) == jwt::INVALID_SIGNATURE);
 }
 
 fn void test_encode()
 {
 	String token = jwt::new_encode(PAYLOAD, SECRET)!!;
-	defer token.free();
+	defer token.free(mem);
 	assert(token == JWT_TEXT, "JWT encoding failed: got: %s, want: %s", token, JWT_TEXT);
 }
 
 fn void test_encode_no_sig()
 {
 	String token = jwt::new_encode(PAYLOAD, "", JwtSigningMethod.NONE)!!;
-	defer token.free();
+	defer token.free(mem);
 	assert(token == JWT_TEXT_NO_SIG, "JWT encoding failed (no sig): got: %s, want: %s", token, JWT_TEXT_NO_SIG);
 }
 
